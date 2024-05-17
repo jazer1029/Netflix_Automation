@@ -1,0 +1,16 @@
+{
+  "name": "prueba-de-automatizacion",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Netflix-login.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^119.0.1",
+    "selenium-webdriver": "^4.16.0"
+  }
+}
