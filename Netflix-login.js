@@ -41,4 +41,4 @@ async function netflixLoginTest() {
 netflixLoginTest();
 
 //Julio Jazer Ramirez Zorrilla
-//2021-2360
+// En las lines 24 y 25 donde dice "Email" y "Contraseña" van las credenciales a usar para el inicio de sesion en Netflix.
