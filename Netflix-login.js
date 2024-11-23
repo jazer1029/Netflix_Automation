@@ -84,3 +84,4 @@ netflixLoginTest();
 
 //Julio Jazer Ramirez Zorrilla
 // En las lines 24 y 25 donde dice "Email" y "Contraseña" van las credenciales a usar para el inicio de sesion en Netflix.
+// Video ejecutando la prueba https://youtu.be/hTklI3vFnv4
