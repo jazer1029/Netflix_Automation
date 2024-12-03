@@ -6,7 +6,6 @@ const fs = require('fs'); // Módulo para trabajar con archivos
 const options = new chrome.Options();
 options.addArguments('--disable-extensions');
 options.addArguments('--disable-gpu');
-//options.addArguments('--headless'); // Ejecución sin interfaz gráfica
 
 // Función principal para ejecutar los casos de prueba
 async function runAllTests() {
@@ -25,15 +24,15 @@ async function runAllTests() {
 
 // Casos de prueba
 
-// Caso de prueba: Validación de inicio de sesión de Netflix
+// 1.Caso de prueba: Validación de inicio de sesión de Netflix
 async function testNetflixLogin() {
   const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   let testResult = '';
   let details = 'Inicio de sesión de Netflix. ';
   try {
       await driver.get('https://www.netflix.com/login');
-      await driver.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com', Key.RETURN);
-      await driver.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+      await driver.findElement(By.name('userLoginId')).sendKeys('email', Key.RETURN);
+      await driver.findElement(By.name('password')).sendKeys('password', Key.RETURN);
       await driver.wait(until.urlContains('https://www.netflix.com/browse'), 10000);
       details += 'Inicio de sesión exitoso.';
       testResult = 'Exitoso';
@@ -46,15 +45,15 @@ async function testNetflixLogin() {
   }
 }
 
-// 1. Inicio de sesión exitoso con credenciales válidas
+// 2. Inicio de sesión exitoso con credenciales válidas
 async function testValidLogin() {
     const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     let testResult = '';
     let details = 'Inicio de sesión válido. ';
     try {
         await driver.get('https://www.netflix.com/login');
-        await driver.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com');
-        await driver.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+        await driver.findElement(By.name('userLoginId')).sendKeys('email');
+        await driver.findElement(By.name('password')).sendKeys('password', Key.RETURN);
         await driver.wait(until.urlContains('browse'), 10000);
         details += 'Inicio de sesión exitoso.';
         testResult = 'Exitoso';
@@ -67,7 +66,7 @@ async function testValidLogin() {
     }
 }
 
-// 2. Usuario inválido
+// 3. Usuario inválido
 async function testInvalidUser() {
     const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     let testResult = '';
@@ -75,7 +74,7 @@ async function testInvalidUser() {
     try {
         await driver.get('https://www.netflix.com/login');
         await driver.findElement(By.name('userLoginId')).sendKeys('invalid_user@example.com');
-        await driver.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+        await driver.findElement(By.name('password')).sendKeys('password', Key.RETURN);
         const errorMessage = await driver.findElement(By.css('.error-message')).getText();
         if (errorMessage.includes('Usuario no encontrado')) {
             details += 'Mensaje de error correcto mostrado.';
@@ -93,14 +92,14 @@ async function testInvalidUser() {
     }
 }
 
-// 3. Contraseña inválida
+// 4. Contraseña inválida
 async function testInvalidPassword() {
     const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     let testResult = '';
     let details = 'Contraseña inválida. ';
     try {
         await driver.get('https://www.netflix.com/login');
-        await driver.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com');
+        await driver.findElement(By.name('userLoginId')).sendKeys('email');
         await driver.findElement(By.name('password')).sendKeys('InvalidPassword', Key.RETURN);
         const errorMessage = await driver.findElement(By.css('.error-message')).getText();
         if (errorMessage.includes('Contraseña incorrecta')) {
@@ -119,7 +118,7 @@ async function testInvalidPassword() {
     }
 }
 
-// 4. Campos vacíos
+// 5. Campos vacíos
 async function testEmptyFields() {
     const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
     let testResult = '';
@@ -144,7 +143,7 @@ async function testEmptyFields() {
     }
 }
 
-// 5. Formato de correo inválido
+// 6. Formato de correo inválido
 async function testInvalidEmailFormat() {
   const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   let testResult = '';
@@ -152,7 +151,7 @@ async function testInvalidEmailFormat() {
   try {
       await driver.get('https://www.netflix.com/login');
       await driver.findElement(By.name('userLoginId')).sendKeys('invalid_email');
-      await driver.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+      await driver.findElement(By.name('password')).sendKeys('password', Key.RETURN);
       const errorMessage = await driver.findElement(By.css('.error-message')).getText();
       if (errorMessage.includes('Correo electrónico no válido')) {
           details += 'Mensaje de error correcto mostrado.';
@@ -170,7 +169,7 @@ async function testInvalidEmailFormat() {
   }
 }
 
-// 6. Bloqueo después de múltiples intentos fallidos
+// 7. Bloqueo después de múltiples intentos fallidos
 async function testAccountLock() {
   const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   let testResult = '';
@@ -179,7 +178,7 @@ async function testAccountLock() {
       await driver.get('https://www.netflix.com/login');
       // Intentar 3 veces con contraseñas incorrectas
       for (let i = 0; i < 3; i++) {
-          await driver.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com');
+          await driver.findElement(By.name('userLoginId')).sendKeys('email');
           await driver.findElement(By.name('password')).sendKeys('InvalidPassword', Key.RETURN);
           await driver.sleep(2000); // Esperar 2 segundos entre intentos
       }
@@ -200,7 +199,7 @@ async function testAccountLock() {
   }
 }
 
-// 7. Inicio de sesión con espacios en blanco
+// 8. Inicio de sesión con espacios en blanco
 async function testWhitespaceFields() {
   const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   let testResult = '';
@@ -226,7 +225,7 @@ async function testWhitespaceFields() {
   }
 }
 
-// 8. Inicio de sesión en navegadores diferentes simultáneamente
+// 9. Inicio de sesión en navegadores diferentes simultáneamente
 async function testMultipleBrowserSessions() {
   const driver1 = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   const driver2 = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
@@ -235,14 +234,14 @@ async function testMultipleBrowserSessions() {
   try {
       // Iniciar sesión en navegador 1
       await driver1.get('https://www.netflix.com/login');
-      await driver1.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com');
-      await driver1.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+      await driver1.findElement(By.name('userLoginId')).sendKeys('email');
+      await driver1.findElement(By.name('password')).sendKeys('password', Key.RETURN);
       await driver1.wait(until.urlContains('browse'), 10000);
 
       // Iniciar sesión en navegador 2
       await driver2.get('https://www.netflix.com/login');
-      await driver2.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com');
-      await driver2.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+      await driver2.findElement(By.name('userLoginId')).sendKeys('email');
+      await driver2.findElement(By.name('password')).sendKeys('password', Key.RETURN);
       await driver2.wait(until.urlContains('browse'), 10000);
 
       details += 'Ambas sesiones iniciaron correctamente.';
@@ -257,7 +256,7 @@ async function testMultipleBrowserSessions() {
   }
 }
 
-// 9. Validación del enlace "Olvidé mi contraseña"
+// 10. Validación del enlace "Olvidé mi contraseña"
 async function testForgotPasswordLink() {
   const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   let testResult = '';
@@ -277,7 +276,7 @@ async function testForgotPasswordLink() {
   }
 }
 
-// 10. Inicio de sesión después de cerrar sesión
+// 11. Inicio de sesión después de cerrar sesión
 async function testReLoginAfterLogout() {
   const driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
   let testResult = '';
@@ -285,8 +284,8 @@ async function testReLoginAfterLogout() {
   try {
       // Inicio de sesión inicial
       await driver.get('https://www.netflix.com/login');
-      await driver.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com');
-      await driver.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+      await driver.findElement(By.name('userLoginId')).sendKeys('email');
+      await driver.findElement(By.name('password')).sendKeys('password', Key.RETURN);
       await driver.wait(until.urlContains('browse'), 10000);
 
       // Cerrar sesión
@@ -294,8 +293,8 @@ async function testReLoginAfterLogout() {
 
       // Reingresar
       await driver.get('https://www.netflix.com/login');
-      await driver.findElement(By.name('userLoginId')).sendKeys('Rogelyr@hotmail.com');
-      await driver.findElement(By.name('password')).sendKeys('Nashla04', Key.RETURN);
+      await driver.findElement(By.name('userLoginId')).sendKeys('email');
+      await driver.findElement(By.name('password')).sendKeys('password', Key.RETURN);
       await driver.wait(until.urlContains('browse'), 10000);
 
       details += 'Reinicio de sesión exitoso.';
@@ -352,6 +351,7 @@ function generateHTMLReport(testName, testResult, details) {
 // Ejecutar todas las pruebas
 runAllTests();
 
+
 //Julio Jazer Ramirez Zorrilla
-// En las lines 24 y 25 donde dice "Email" y "Contraseña" van las credenciales a usar para el inicio de sesion en Netflix.
-// Video ejecutando la prueba https://youtu.be/hTklI3vFnv4
+// En las lineas donde dice "email" y "password" van las credenciales a usar para el inicio de sesion en Netflix.
+// Video ejecutando la prueba https://youtu.be/G-qGcGEG1tM
